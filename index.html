@@ -1,0 +1,58 @@
+<?php
+include 'db.php';
+
+$sql = "SELECT sales.sale_date, partners.name AS partner_name, products.name AS product_name, sales.quantity 
+        FROM sales 
+        JOIN partners ON sales.partner_id = partners.id 
+        JOIN products ON sales.product_id = products.id 
+        ORDER BY sales.sale_date DESC";
+$result = $conn->query($sql);
+?>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Просмотр продаж</title>
+</head>
+<body>
+
+<h1>Просмотр продаж</h1>
+<a href="view_partners.php">Просмотреть партнеров</a>
+<a href="add_sale.php">Добавить продажу</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Дата продажи</th>
+            <th>Партнер</th>
+            <th>Товар</th>
+            <th>Количество</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if ($result->num_rows > 0): ?>
+            <?php while($row = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><?php echo $row['sale_date']; ?></td>
+                    <td><?php echo $row['partner_name']; ?></td>
+                    <td><?php echo $row['product_name']; ?></td>
+                    <td><?php echo $row['quantity']; ?></td>
+                </tr>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="4">Нет записей о продажах.</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+
+</body>
+</html>
+
+<?php
+$conn->close();
+?>

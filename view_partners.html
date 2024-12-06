@@ -1,0 +1,49 @@
+<?php
+include 'db.php';
+
+$sql = "SELECT * FROM partners";
+$result = $conn->query($sql);
+?>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Просмотр партнеров</title>
+</head>
+<body>
+
+<h1>Просмотр партнеров</h1>
+<a href="index.php">Просмотреть продажи</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Имя партнера</th>
+            <th>Адрес партнера</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if ($result->num_rows > 0): ?>
+            <?php while($row = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><?php echo $row['name']; ?></td>
+                    <td><?php echo $row['address']; ?></td>
+                </tr>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="2">Нет записей о партнерах.</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+
+</body>
+</html>
+
+<?php
+$conn->close();
+?>
